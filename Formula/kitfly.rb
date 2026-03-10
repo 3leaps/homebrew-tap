@@ -1,25 +1,25 @@
 class Kitfly < Formula
   desc "Turn your writing into a website"
   homepage "https://github.com/3leaps/kitfly"
-  version "0.2.3"
+  version "0.2.4"
   license "MIT"
 
   on_macos do
     on_arm do
-      url "https://github.com/3leaps/kitfly/releases/download/v0.2.3/kitfly-darwin-arm64"
-      sha256 "6a533c752dd5532c41b3273a98d106e1066d58ab687dce40b85bee737d85e308"
+      url "https://github.com/3leaps/kitfly/releases/download/v0.2.4/kitfly-darwin-arm64"
+      sha256 "e2ab9d07dc5692648da6b5df0472174b7a41497184f2b5d5e43bae76fc15322b"
     end
   end
 
   on_linux do
     on_intel do
-      url "https://github.com/3leaps/kitfly/releases/download/v0.2.3/kitfly-linux-amd64"
-      sha256 "14ddd5138c3095e4500b2ba5279e6996d660f33d9ea587f1a24691469a4c712d"
+      url "https://github.com/3leaps/kitfly/releases/download/v0.2.4/kitfly-linux-amd64"
+      sha256 "d12e90d20df569ee131ab166b0449dcb2cf8126804f6fb64aa28e92a9855dc82"
     end
 
     on_arm do
-      url "https://github.com/3leaps/kitfly/releases/download/v0.2.3/kitfly-linux-arm64"
-      sha256 "13ebc994653d14b61d6847a8a189ff2e03dd2e03a55741cb71df2da3d86ae589"
+      url "https://github.com/3leaps/kitfly/releases/download/v0.2.4/kitfly-linux-arm64"
+      sha256 "ece3a5b514236927a872b5f4c60f6f0a69e5fa660499a6c4950d8e53d5e854cc"
     end
   end
 
