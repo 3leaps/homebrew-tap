@@ -1,25 +1,25 @@
 class Seclusor < Formula
   desc "seclusor command-line tool"
   homepage "https://github.com/3leaps/seclusor"
-  version "0.1.4"
+  version "0.1.5"
   license "MIT"
 
   on_macos do
     on_arm do
-      url "https://github.com/3leaps/seclusor/releases/download/v0.1.4/seclusor-darwin-arm64"
-      sha256 "35f3f35800c10980a5f0e030b9f2e8c2878fce4424e195aa9880c35004304068"
+      url "https://github.com/3leaps/seclusor/releases/download/v0.1.5/seclusor-darwin-arm64"
+      sha256 "f51cf9a9d1cad8ae04f71244ffba7b153e2086379d6f1936a7c3e595de1cf810"
     end
   end
 
   on_linux do
     on_intel do
-      url "https://github.com/3leaps/seclusor/releases/download/v0.1.4/seclusor-linux-amd64"
-      sha256 "3de94e9aafec91f1ee5498553a018fbb680fb522e58973c759b067dd6fdb5906"
+      url "https://github.com/3leaps/seclusor/releases/download/v0.1.5/seclusor-linux-amd64"
+      sha256 "52eab79141698ada94057abb780f5d06049fde751fd694a39bff56a492f87db3"
     end
 
     on_arm do
-      url "https://github.com/3leaps/seclusor/releases/download/v0.1.4/seclusor-linux-arm64"
-      sha256 "204db77c01c21c35406a5a37d07d8710a03c1bead96a5c457f714998f32226a0"
+      url "https://github.com/3leaps/seclusor/releases/download/v0.1.5/seclusor-linux-arm64"
+      sha256 "1579641f58dd3baa8a8cbae235abb7f8ef93625f116a89bc39542c4005b7d190"
     end
   end
 
