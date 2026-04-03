@@ -32,6 +32,7 @@ description_for = lambda do |name|
     "kitfly" => "Turn your writing into a website",
     "gonimbus" => "Cloud object storage crawl, inspect, and streaming CLI",
     "mdmeld" => "Pack directory trees into markdown archives for AI sharing",
+    "seclusor" => "Git-trackable secrets management with age encryption",
   }.fetch(name, "#{name} command-line tool")
 end
 
