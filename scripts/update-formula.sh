@@ -31,6 +31,7 @@ description_for = lambda do |name|
   {
     "kitfly" => "Turn your writing into a website",
     "gonimbus" => "Cloud object storage crawl, inspect, and streaming CLI",
+    "mdmeld" => "Pack directory trees into markdown archives for AI sharing",
   }.fetch(name, "#{name} command-line tool")
 end
 
@@ -38,6 +39,7 @@ test_args_for = lambda do |name|
   {
     "kitfly" => ["--version"],
     "gonimbus" => ["version"],
+    "mdmeld" => ["--help"],
   }.fetch(name, ["--version"])
 end
 
