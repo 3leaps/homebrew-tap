@@ -44,6 +44,12 @@ test_args_for = lambda do |name|
   }.fetch(name, ["--version"])
 end
 
+license_for = lambda do |name|
+  {
+    "gonimbus" => "Apache-2.0",
+  }.fetch(name, "MIT")
+end
+
 if release["isDraft"] || release["isPrerelease"]
   abort("error: latest release for #{repo} is not a published stable release")
 end
@@ -83,7 +89,7 @@ lines << "class #{class_name} < Formula"
 lines << "  desc #{description_for.call(app).inspect}"
 lines << "  homepage \"https://github.com/#{repo}\""
 lines << "  version #{version.inspect}"
-lines << "  license \"MIT\""
+lines << "  license #{license_for.call(app).inspect}"
 lines << ""
 lines << "  on_macos do"
 if resolved["darwin_amd64"]
@@ -126,7 +132,11 @@ lines << "  private"
 lines << ""
 lines << "  def platform_suffix"
 lines << "    return \"darwin-arm64\" if OS.mac? && Hardware::CPU.arm?"
-lines << "    return \"darwin-amd64\" if OS.mac?"
+if resolved["darwin_amd64"]
+  lines << "    return \"darwin-amd64\" if OS.mac?"
+else
+  lines << "    odie \"prebuilt macOS Intel binary is not published for #{app} \#{version}\" if OS.mac?"
+end
 lines << "    return \"linux-arm64\" if Hardware::CPU.arm?"
 lines << ""
 lines << "    \"linux-amd64\""
