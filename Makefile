@@ -2,7 +2,7 @@ TAP_NAME := 3leaps/tap
 FORMULA_DIR := Formula
 UPDATE_SCRIPT := ./scripts/update-formula.sh
 
-.PHONY: help update update-kitfly update-gonimbus update-mdmeld audit test clean clean-tap style precommit release
+.PHONY: help update update-kitfly update-gonimbus update-mdmeld update-seclusor audit test clean clean-tap style precommit release
 
 help:
 	@echo "3 Leaps Homebrew Tap"
@@ -12,6 +12,7 @@ help:
 	@echo "  make update-kitfly          Update kitfly"
 	@echo "  make update-gonimbus        Update gonimbus"
 	@echo "  make update-mdmeld          Update mdmeld"
+	@echo "  make update-seclusor        Update seclusor"
 	@echo "  make style                  Run Ruby style checks"
 	@echo "  make audit APP=kitfly       Run brew audit on one formula"
 	@echo "  make test APP=kitfly        Install and test one formula locally"
@@ -35,8 +36,11 @@ update-gonimbus:
 update-mdmeld:
 	@$(MAKE) update APP=mdmeld
 
+update-seclusor:
+	@$(MAKE) update APP=seclusor
+
 style:
-	@brew style $(FORMULA_DIR)/*.rb
+	@brew style .
 
 audit:
 ifndef APP

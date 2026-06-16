@@ -1,5 +1,7 @@
 # 3 Leaps Homebrew Tap
 
+[![brew test-bot](https://github.com/3leaps/homebrew-tap/actions/workflows/tests.yml/badge.svg)](https://github.com/3leaps/homebrew-tap/actions/workflows/tests.yml)
+
 Official Homebrew tap for CLI tools published from the [3leaps GitHub organization](https://github.com/3leaps).
 
 This tap is the distribution layer for installable macOS and Linux binaries released from 3 Leaps repositories. Windows binaries are still published in upstream GitHub releases, but Homebrew only consumes the macOS and Linux assets.
@@ -8,6 +10,8 @@ This tap is the distribution layer for installable macOS and Linux binaries rele
 
 - `kitfly` - Turn your writing into a website
 - `gonimbus` - Cloud object storage crawl, inspect, and streaming CLI
+- `mdmeld` - Pack directory trees into markdown archives for AI sharing
+- `seclusor` - Git-trackable secrets management with age encryption
 
 ## Quick Start
 
@@ -15,6 +19,8 @@ This tap is the distribution layer for installable macOS and Linux binaries rele
 brew tap 3leaps/tap
 brew install 3leaps/tap/kitfly
 brew install 3leaps/tap/gonimbus
+brew install 3leaps/tap/mdmeld
+brew install 3leaps/tap/seclusor
 ```
 
 Or install by short name after tapping:
@@ -23,6 +29,8 @@ Or install by short name after tapping:
 brew tap 3leaps/tap
 brew install kitfly
 brew install gonimbus
+brew install mdmeld
+brew install seclusor
 ```
 
 ## Supported Platforms
@@ -34,6 +42,8 @@ Homebrew formulae in this repository install prebuilt binaries for the platforms
 - Linux AMD64
 
 Some tools also publish macOS AMD64 assets. Upstream release workflows can additionally publish Windows AMD64 and Windows ARM64 binaries, but those assets are not used by Homebrew.
+
+The current formulae are Apple Silicon only on macOS plus Linux AMD64/ARM64. Installing one on an Intel Mac reports an unsupported-architecture error.
 
 ## Maintainer Workflow
 
@@ -49,10 +59,12 @@ The generic updater reads the latest published GitHub release metadata from the 
 
 Use `make release APP=<name>` to run the full local tap workflow.
 
+CI runs `brew test-bot` on every push and pull request. For branch protection, require `test-bot (ubuntu-24.04)` and `test-bot (macos-latest)`.
+
 ## Documentation
 
-- [Release process](/Users/davethompson/dev/3leaps/homebrew-tap/RELEASE_PROCESS.md)
-- [Adding another formula](/Users/davethompson/dev/3leaps/homebrew-tap/docs/adding-a-formula.md)
+- [Release process](RELEASE_PROCESS.md)
+- [Adding another formula](docs/adding-a-formula.md)
 
 ## Repository Layout
 

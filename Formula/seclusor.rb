@@ -4,7 +4,13 @@ class Seclusor < Formula
   version "0.1.6"
   license "MIT"
 
+  # No darwin-amd64 binary is published. The head spec gives unsupported
+  # platforms a buildable fallback and keeps tap-wide readall checks valid.
+  head "https://github.com/3leaps/seclusor.git", branch: "main"
+
   on_macos do
+    depends_on arch: :arm64
+
     on_arm do
       url "https://github.com/3leaps/seclusor/releases/download/v0.1.6/seclusor-darwin-arm64"
       sha256 "da4164021761cd0f36c7962d86afa8c601c6a6dff953b3a20027fc5d755302d9"
@@ -35,7 +41,8 @@ class Seclusor < Formula
 
   def platform_suffix
     return "darwin-arm64" if OS.mac? && Hardware::CPU.arm?
-    return "darwin-amd64" if OS.mac?
+
+    odie "prebuilt macOS Intel binary is not published for seclusor #{version}" if OS.mac?
     return "linux-arm64" if Hardware::CPU.arm?
 
     "linux-amd64"
