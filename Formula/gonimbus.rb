@@ -4,7 +4,13 @@ class Gonimbus < Formula
   version "0.3.2"
   license "Apache-2.0"
 
+  # No darwin-amd64 binary is published. The head spec gives unsupported
+  # platforms a buildable fallback and keeps tap-wide readall checks valid.
+  head "https://github.com/3leaps/gonimbus.git", branch: "main"
+
   on_macos do
+    depends_on arch: :arm64
+
     on_arm do
       url "https://github.com/3leaps/gonimbus/releases/download/v0.3.2/gonimbus-darwin-arm64"
       sha256 "c27606215bd7980137824b48a30fac655f1a6d1269043c2a11e995960d6bce3c"

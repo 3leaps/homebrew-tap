@@ -4,7 +4,13 @@ class Kitfly < Formula
   version "0.2.4"
   license "MIT"
 
+  # No darwin-amd64 binary is published. The head spec gives unsupported
+  # platforms a buildable fallback and keeps tap-wide readall checks valid.
+  head "https://github.com/3leaps/kitfly.git", branch: "main"
+
   on_macos do
+    depends_on arch: :arm64
+
     on_arm do
       url "https://github.com/3leaps/kitfly/releases/download/v0.2.4/kitfly-darwin-arm64"
       sha256 "e2ab9d07dc5692648da6b5df0472174b7a41497184f2b5d5e43bae76fc15322b"
@@ -35,7 +41,8 @@ class Kitfly < Formula
 
   def platform_suffix
     return "darwin-arm64" if OS.mac? && Hardware::CPU.arm?
-    return "darwin-amd64" if OS.mac?
+
+    odie "prebuilt macOS Intel binary is not published for kitfly #{version}" if OS.mac?
     return "linux-arm64" if Hardware::CPU.arm?
 
     "linux-amd64"
