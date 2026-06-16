@@ -135,6 +135,7 @@ lines << "    return \"darwin-arm64\" if OS.mac? && Hardware::CPU.arm?"
 if resolved["darwin_amd64"]
   lines << "    return \"darwin-amd64\" if OS.mac?"
 else
+  lines << ""
   lines << "    odie \"prebuilt macOS Intel binary is not published for #{app} \#{version}\" if OS.mac?"
 end
 lines << "    return \"linux-arm64\" if Hardware::CPU.arm?"
