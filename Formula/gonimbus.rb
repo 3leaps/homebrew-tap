@@ -1,7 +1,7 @@
 class Gonimbus < Formula
   desc "Cloud object storage crawl, inspect, and streaming CLI"
   homepage "https://github.com/3leaps/gonimbus"
-  version "0.3.2"
+  version "0.3.3"
   license "Apache-2.0"
 
   # No darwin-amd64 binary is published. The head spec gives unsupported
@@ -12,20 +12,20 @@ class Gonimbus < Formula
     depends_on arch: :arm64
 
     on_arm do
-      url "https://github.com/3leaps/gonimbus/releases/download/v0.3.2/gonimbus-darwin-arm64"
-      sha256 "c27606215bd7980137824b48a30fac655f1a6d1269043c2a11e995960d6bce3c"
+      url "https://github.com/3leaps/gonimbus/releases/download/v0.3.3/gonimbus-darwin-arm64"
+      sha256 "1ac2ce94af9855ad83981d014c9295b0d309830cb3ca481a96a00c69c45b5be6"
     end
   end
 
   on_linux do
     on_intel do
-      url "https://github.com/3leaps/gonimbus/releases/download/v0.3.2/gonimbus-linux-amd64"
-      sha256 "dd91cc8e788b6fa8fde81153d94807edcf72515c93a9e950136964e9be5149cb"
+      url "https://github.com/3leaps/gonimbus/releases/download/v0.3.3/gonimbus-linux-amd64"
+      sha256 "3f541f71759117a31f6e8167073f038da418d0642bc6f91ac2504314adef2eaf"
     end
 
     on_arm do
-      url "https://github.com/3leaps/gonimbus/releases/download/v0.3.2/gonimbus-linux-arm64"
-      sha256 "1d40b95ae1240e77815010656c4a4e4ae30df0a695097dbcd9d95942a659f5c9"
+      url "https://github.com/3leaps/gonimbus/releases/download/v0.3.3/gonimbus-linux-arm64"
+      sha256 "1602771d42bf6f9e17875f98d621795c7a65d5ab2b29ec221c01994cee107d61"
     end
   end
 
