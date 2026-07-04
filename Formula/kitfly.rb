@@ -1,7 +1,7 @@
 class Kitfly < Formula
   desc "Turn your writing into a website"
   homepage "https://github.com/3leaps/kitfly"
-  version "0.2.4"
+  version "0.2.5"
   license "MIT"
 
   # No darwin-amd64 binary is published. The head spec gives unsupported
@@ -12,20 +12,20 @@ class Kitfly < Formula
     depends_on arch: :arm64
 
     on_arm do
-      url "https://github.com/3leaps/kitfly/releases/download/v0.2.4/kitfly-darwin-arm64"
-      sha256 "e2ab9d07dc5692648da6b5df0472174b7a41497184f2b5d5e43bae76fc15322b"
+      url "https://github.com/3leaps/kitfly/releases/download/v0.2.5/kitfly-darwin-arm64"
+      sha256 "a8f53c50a490a4ab6ca5a05ee8be643ea0f2d6f201fff2d35346fae5216e6a5c"
     end
   end
 
   on_linux do
     on_intel do
-      url "https://github.com/3leaps/kitfly/releases/download/v0.2.4/kitfly-linux-amd64"
-      sha256 "d12e90d20df569ee131ab166b0449dcb2cf8126804f6fb64aa28e92a9855dc82"
+      url "https://github.com/3leaps/kitfly/releases/download/v0.2.5/kitfly-linux-amd64"
+      sha256 "f2972add18feac43245704f7eced8e5c131e75f1f67cd8055280a0df84642b02"
     end
 
     on_arm do
-      url "https://github.com/3leaps/kitfly/releases/download/v0.2.4/kitfly-linux-arm64"
-      sha256 "ece3a5b514236927a872b5f4c60f6f0a69e5fa660499a6c4950d8e53d5e854cc"
+      url "https://github.com/3leaps/kitfly/releases/download/v0.2.5/kitfly-linux-arm64"
+      sha256 "4c589864a61e8031594cb928f945fbd919a3dfe9162c613f1dc7e2865c6f7890"
     end
   end
 
