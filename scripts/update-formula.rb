@@ -88,7 +88,6 @@ lines = []
 lines << "class #{class_name} < Formula"
 lines << "  desc #{description_for.call(app).inspect}"
 lines << "  homepage \"https://github.com/#{repo}\""
-lines << "  version #{version.inspect}"
 lines << "  license #{license_for.call(app).inspect}"
 unless resolved["darwin_amd64"]
   lines << ""

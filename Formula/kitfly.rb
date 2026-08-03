@@ -1,7 +1,6 @@
 class Kitfly < Formula
   desc "Turn your writing into a website"
   homepage "https://github.com/3leaps/kitfly"
-  version "0.2.5"
   license "MIT"
 
   # No darwin-amd64 binary is published. The head spec gives unsupported

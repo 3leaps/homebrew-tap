@@ -1,7 +1,6 @@
 class Seclusor < Formula
   desc "Git-trackable secrets management with age encryption"
   homepage "https://github.com/3leaps/seclusor"
-  version "0.2.0"
   license "MIT"
 
   # No darwin-amd64 binary is published. The head spec gives unsupported
