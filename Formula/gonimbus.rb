@@ -1,7 +1,6 @@
 class Gonimbus < Formula
   desc "Cloud object storage crawl, inspect, and streaming CLI"
   homepage "https://github.com/3leaps/gonimbus"
-  version "0.4.1"
   license "Apache-2.0"
 
   # No darwin-amd64 binary is published. The head spec gives unsupported

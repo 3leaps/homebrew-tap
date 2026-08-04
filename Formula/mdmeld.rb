@@ -1,7 +1,6 @@
 class Mdmeld < Formula
   desc "Pack directory trees into markdown archives for AI sharing"
   homepage "https://github.com/3leaps/mdmeld"
-  version "0.2.0"
   license "MIT"
 
   # No darwin-amd64 binary is published. The head spec gives unsupported
