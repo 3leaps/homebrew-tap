@@ -4,7 +4,8 @@ This guide is the default pattern for agents and maintainers when onboarding ano
 
 ## Prerequisites
 
-The upstream repository should already:
+The upstream repository should already satisfy the direct-binary default, or
+have an explicit archive profile in `scripts/update-formula.rb`:
 
 - publish GitHub releases from `3leaps/<app>`
 - upload direct binaries for `darwin-arm64`, `linux-amd64`, and `linux-arm64`
@@ -30,12 +31,13 @@ Optional:
 <app>-darwin-amd64
 ```
 
-If a repository uses archives instead of direct binaries, update `scripts/update-formula.sh` and the formula template before onboarding that tool.
+Decernor uses the existing versioned-archive profile. Add another archive
+profile only when its release layout differs from both established patterns.
 
 ## First-Time Onboarding
 
 1. Publish a real GitHub release from the upstream repository.
-2. Run `make update APP=<app>` in this repository.
+2. Run `make update APP=<app> TAG=vX.Y.Z` in this repository.
 3. Review the generated formula in `Formula/<app>.rb`.
 4. Run `make audit APP=<app>`.
 5. Run `make test APP=<app>`.
@@ -48,7 +50,7 @@ Each upstream repository should document a post-publish step similar to:
 
 ```bash
 cd ../homebrew-tap
-make update APP=<app>
+make update APP=<app> TAG=v<version>
 make audit APP=<app>
 make test APP=<app>
 git add Formula/<app>.rb

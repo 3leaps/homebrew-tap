@@ -8,6 +8,7 @@ This tap is the distribution layer for installable macOS and Linux binaries rele
 
 ## Available Formulae
 
+- `decernor` - Local key-material hygiene and readiness checks
 - `kitfly` - Turn your writing into a website
 - `gonimbus` - Cloud object storage crawl, inspect, and streaming CLI
 - `mdmeld` - Pack directory trees into markdown archives for AI sharing
@@ -17,6 +18,7 @@ This tap is the distribution layer for installable macOS and Linux binaries rele
 
 ```bash
 brew tap 3leaps/tap
+brew install 3leaps/tap/decernor
 brew install 3leaps/tap/kitfly
 brew install 3leaps/tap/gonimbus
 brew install 3leaps/tap/mdmeld
@@ -27,6 +29,7 @@ Or install by short name after tapping:
 
 ```bash
 brew tap 3leaps/tap
+brew install decernor
 brew install kitfly
 brew install gonimbus
 brew install mdmeld
@@ -43,19 +46,23 @@ Homebrew formulae in this repository install prebuilt binaries for the platforms
 
 Some tools also publish macOS AMD64 assets. Upstream release workflows can additionally publish Windows AMD64 and Windows ARM64 binaries, but those assets are not used by Homebrew.
 
-The current formulae are Apple Silicon only on macOS plus Linux AMD64/ARM64. Installing one on an Intel Mac reports an unsupported-architecture error.
+Formula support follows each published release. Decernor supports macOS Intel
+and Apple Silicon plus Linux AMD64/ARM64; formulae without an Intel macOS asset
+report an unsupported-architecture error on that platform.
 
 ## Maintainer Workflow
 
 After an upstream GitHub release is published:
 
 ```bash
-make update APP=kitfly
+make update APP=kitfly TAG=vX.Y.Z
 make audit APP=kitfly
 make test APP=kitfly
 ```
 
-The generic updater reads the latest published GitHub release metadata from the target repository and rewrites the formula with the release tag and per-platform SHA256 digests.
+The generic updater reads the requested published GitHub release metadata and
+rewrites the formula with the release tag and per-platform SHA256 digests. Omit
+`TAG` only when intentionally updating to the latest published release.
 
 Use `make release APP=<name>` to run the full local tap workflow.
 

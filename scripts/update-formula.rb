@@ -6,12 +6,14 @@ require "json"
 require "fileutils"
 require "open3"
 
-app = ARGV.fetch(0) { abort("usage: update-formula.rb <app>") }
+app = ARGV.fetch(0) { abort("usage: update-formula.rb <app> [tag]") }
+release_tag = ARGV[1].to_s
 repo = "3leaps/#{app}"
 out_file = "Formula/#{app}.rb"
 
 description_for = lambda do |name|
   {
+    "decernor" => "Local key-material hygiene and readiness checks",
     "kitfly"   => "Turn your writing into a website",
     "gonimbus" => "Cloud object storage crawl, inspect, and streaming CLI",
     "mdmeld"   => "Pack directory trees into markdown archives for AI sharing",
@@ -21,6 +23,7 @@ end
 
 test_args_for = lambda do |name|
   {
+    "decernor" => ["version"],
     "kitfly"   => ["--version"],
     "gonimbus" => ["version"],
     "mdmeld"   => ["--help"],
@@ -33,26 +36,22 @@ license_for = lambda do |name|
   }.fetch(name, "MIT")
 end
 
-release_json, release_error, release_status = Open3.capture3(
-  "gh",
-  "release",
-  "view",
-  "--repo",
-  repo,
-  "--json",
-  "tagName,assets,name,isDraft,isPrerelease",
-)
+release_command = ["gh", "release", "view"]
+release_command << release_tag unless release_tag.empty?
+release_command += ["--repo", repo, "--json", "tagName,assets,name,isDraft,isPrerelease"]
+release_json, release_error, release_status = Open3.capture3(*release_command)
 unless release_status.success?
-  abort(release_error.empty? ? "error: failed to read latest release for #{repo}" : release_error)
+  abort(release_error.empty? ? "error: failed to read release for #{repo}" : release_error)
 end
 
 release = JSON.parse(release_json)
 if release["isDraft"] || release["isPrerelease"]
-  abort("error: latest release for #{repo} is not a published stable release")
+  abort("error: requested release for #{repo} is not a published stable release")
 end
 
 version = release.fetch("tagName").delete_prefix("v")
 class_name = app.split(/[^a-zA-Z0-9]/).map(&:capitalize).join
+archive_profile = app == "decernor"
 
 assets = release.fetch("assets")
 required = {
@@ -60,9 +59,16 @@ required = {
   "linux_amd64"  => "#{app}-linux-amd64",
   "linux_arm64"  => "#{app}-linux-arm64",
 }
-optional = {
-  "darwin_amd64" => "#{app}-darwin-amd64",
-}
+optional = { "darwin_amd64" => "#{app}-darwin-amd64" }
+if archive_profile
+  required = {
+    "darwin_amd64" => "#{app}_#{version}_darwin_amd64.tar.gz",
+    "darwin_arm64" => "#{app}_#{version}_darwin_arm64.tar.gz",
+    "linux_amd64"  => "#{app}_#{version}_linux_amd64.tar.gz",
+    "linux_arm64"  => "#{app}_#{version}_linux_arm64.tar.gz",
+  }
+  optional = {}
+end
 
 resolved = required.transform_values do |asset_name|
   asset = assets.find { |item| item["name"] == asset_name }
@@ -127,7 +133,11 @@ lines << "    end"
 lines << "  end"
 lines << ""
 lines << "  def install"
-lines << "    bin.install \"#{app}-\#{platform_suffix}\" => \"#{app}\""
+lines << if archive_profile
+  "    bin.install \"#{app}\""
+else
+  "    bin.install \"#{app}-\#{platform_suffix}\" => \"#{app}\""
+end
 lines << "  end"
 lines << ""
 lines << "  test do"
@@ -137,21 +147,23 @@ test_args_for.call(app).each_with_index do |arg, index|
   lines << "#{prefix}#{arg.inspect}#{suffix}"
 end
 lines << "  end"
-lines << ""
-lines << "  private"
-lines << ""
-lines << "  def platform_suffix"
-lines << "    return \"darwin-arm64\" if OS.mac? && Hardware::CPU.arm?"
-if resolved["darwin_amd64"]
-  lines << "    return \"darwin-amd64\" if OS.mac?"
-else
+unless archive_profile
   lines << ""
-  lines << "    odie \"prebuilt macOS Intel binary is not published for #{app} \#{version}\" if OS.mac?"
+  lines << "  private"
+  lines << ""
+  lines << "  def platform_suffix"
+  lines << "    return \"darwin-arm64\" if OS.mac? && Hardware::CPU.arm?"
+  if resolved["darwin_amd64"]
+    lines << "    return \"darwin-amd64\" if OS.mac?"
+  else
+    lines << ""
+    lines << "    odie \"prebuilt macOS Intel binary is not published for #{app} \#{version}\" if OS.mac?"
+  end
+  lines << "    return \"linux-arm64\" if Hardware::CPU.arm?"
+  lines << ""
+  lines << "    \"linux-amd64\""
+  lines << "  end"
 end
-lines << "    return \"linux-arm64\" if Hardware::CPU.arm?"
-lines << ""
-lines << "    \"linux-amd64\""
-lines << "  end"
 lines << "end"
 
 FileUtils.mkdir_p("Formula")
