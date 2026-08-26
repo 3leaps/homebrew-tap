@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-APP="${1:?usage: update-formula.sh <app>}"
+APP="${1:?usage: update-formula.sh <app> [tag]}"
+TAG="${2:-}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 if ! command -v gh >/dev/null 2>&1
@@ -16,4 +17,4 @@ then
   exit 1
 fi
 
-exec ruby "${SCRIPT_DIR}/update-formula.rb" "${APP}"
+exec ruby "${SCRIPT_DIR}/update-formula.rb" "${APP}" "${TAG}"
