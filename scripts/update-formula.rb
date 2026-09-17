@@ -18,6 +18,7 @@ description_for = lambda do |name|
     "gonimbus" => "Cloud object storage crawl, inspect, and streaming CLI",
     "mdmeld"   => "Pack directory trees into markdown archives for AI sharing",
     "seclusor" => "Git-trackable secrets management with age encryption",
+    "sfetch"   => "Secure and verifiable release-asset downloader",
   }.fetch(name, "#{name} command-line tool")
 end
 
@@ -33,6 +34,7 @@ end
 license_for = lambda do |name|
   {
     "gonimbus" => "Apache-2.0",
+    "sfetch"   => "Apache-2.0",
   }.fetch(name, "MIT")
 end
 
@@ -51,7 +53,10 @@ end
 
 version = release.fetch("tagName").delete_prefix("v")
 class_name = app.split(/[^a-zA-Z0-9]/).map(&:capitalize).join
-archive_profile = app == "decernor"
+archive_profile = case app
+when "decernor" then :versioned
+when "sfetch" then :unversioned
+end
 
 assets = release.fetch("assets")
 required = {
@@ -60,12 +65,19 @@ required = {
   "linux_arm64"  => "#{app}-linux-arm64",
 }
 optional = { "darwin_amd64" => "#{app}-darwin-amd64" }
-if archive_profile
+if archive_profile == :versioned
   required = {
     "darwin_amd64" => "#{app}_#{version}_darwin_amd64.tar.gz",
     "darwin_arm64" => "#{app}_#{version}_darwin_arm64.tar.gz",
     "linux_amd64"  => "#{app}_#{version}_linux_amd64.tar.gz",
     "linux_arm64"  => "#{app}_#{version}_linux_arm64.tar.gz",
+  }
+  optional = {}
+elsif archive_profile == :unversioned
+  required = {
+    "darwin_arm64" => "#{app}_darwin_arm64.tar.gz",
+    "linux_amd64"  => "#{app}_linux_amd64.tar.gz",
+    "linux_arm64"  => "#{app}_linux_arm64.tar.gz",
   }
   optional = {}
 end
