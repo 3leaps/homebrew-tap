@@ -30,6 +30,14 @@ decernor_<version>_linux_amd64.tar.gz
 decernor_<version>_linux_arm64.tar.gz
 ```
 
+Sfetch publishes unversioned archives containing the `sfetch` binary:
+
+```text
+sfetch_darwin_arm64.tar.gz
+sfetch_linux_amd64.tar.gz
+sfetch_linux_arm64.tar.gz
+```
+
 Windows assets can still be published upstream, but they are ignored here.
 
 ## Updating a Formula
@@ -57,7 +65,7 @@ Before a new repository is added to this tap, confirm:
 - The repository publishes GitHub releases under the `3leaps` org.
 - macOS and Linux binaries exist for `amd64` and `arm64`.
 - Asset names match the direct-binary convention above or an explicit updater
-  profile such as Decernor's versioned archives.
+profile such as Decernor's versioned archives or sfetch's unversioned archives.
 - The binary supports `--version` for the formula test block.
 - The repository release checklist includes a post-publish tap update step.
 

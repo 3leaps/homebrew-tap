@@ -31,8 +31,9 @@ Optional:
 <app>-darwin-amd64
 ```
 
-Decernor uses the existing versioned-archive profile. Add another archive
-profile only when its release layout differs from both established patterns.
+Decernor uses the versioned-archive profile, while sfetch uses unversioned
+archives with underscore-separated platform names. Add another archive profile
+only when its release layout differs from the established patterns.
 
 ## First-Time Onboarding
 

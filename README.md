@@ -13,6 +13,7 @@ This tap is the distribution layer for installable macOS and Linux binaries rele
 - `gonimbus` - Cloud object storage crawl, inspect, and streaming CLI
 - `mdmeld` - Pack directory trees into markdown archives for AI sharing
 - `seclusor` - Git-trackable secrets management with age encryption
+- `sfetch` - Secure and verifiable release-asset downloader
 
 ## Quick Start
 
@@ -23,6 +24,7 @@ brew install 3leaps/tap/kitfly
 brew install 3leaps/tap/gonimbus
 brew install 3leaps/tap/mdmeld
 brew install 3leaps/tap/seclusor
+brew install 3leaps/tap/sfetch
 ```
 
 Or install by short name after tapping:
@@ -34,6 +36,7 @@ brew install kitfly
 brew install gonimbus
 brew install mdmeld
 brew install seclusor
+brew install sfetch
 ```
 
 ## Supported Platforms
