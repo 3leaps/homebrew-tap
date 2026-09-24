@@ -5,25 +5,25 @@ class Decernor < Formula
 
   on_macos do
     on_intel do
-      url "https://github.com/3leaps/decernor/releases/download/v0.1.7/decernor_0.1.7_darwin_amd64.tar.gz"
-      sha256 "5324555d3d2439478afffa57bcaafebcb1e6592894b0bdcac091210feffb5174"
+      url "https://github.com/3leaps/decernor/releases/download/v0.1.8/decernor_0.1.8_darwin_amd64.tar.gz"
+      sha256 "4123d00c5616778482b1abf9470d1ae21271093c9eb47e23e6f59567e60f4e15"
     end
 
     on_arm do
-      url "https://github.com/3leaps/decernor/releases/download/v0.1.7/decernor_0.1.7_darwin_arm64.tar.gz"
-      sha256 "dcd2d1b7d39e6489954bb21938c9a250de5519dc5f2baa64fd0f8a9d2d2afe04"
+      url "https://github.com/3leaps/decernor/releases/download/v0.1.8/decernor_0.1.8_darwin_arm64.tar.gz"
+      sha256 "e3f776fdf779e7b62dced136677fc1b9491042cee1cc54b3ecf896b9b3345769"
     end
   end
 
   on_linux do
     on_intel do
-      url "https://github.com/3leaps/decernor/releases/download/v0.1.7/decernor_0.1.7_linux_amd64.tar.gz"
-      sha256 "2b3d6c5072b63b8fb956d9248b3ece3139c34054a8063679a379e6d49dc5ae70"
+      url "https://github.com/3leaps/decernor/releases/download/v0.1.8/decernor_0.1.8_linux_amd64.tar.gz"
+      sha256 "2f034a1945772983e39dae7143ac2f5ba2c3aa79aa249902fb585960a4582261"
     end
 
     on_arm do
-      url "https://github.com/3leaps/decernor/releases/download/v0.1.7/decernor_0.1.7_linux_arm64.tar.gz"
-      sha256 "e41cc3801ccdc8e21c9934a1b4e91f81111ede421d3448b8740ca76cb63c8f09"
+      url "https://github.com/3leaps/decernor/releases/download/v0.1.8/decernor_0.1.8_linux_arm64.tar.gz"
+      sha256 "0ce0a48d51e1a2fec9ef68aa78eaee4786f48fb541d115bb6184da2e02fc97d7"
     end
   end
 
