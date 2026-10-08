@@ -34,6 +34,21 @@ cat >"${sfetch_fixture_path}" <<'JSON'
 }
 JSON
 
+spanwit_fixture_path="${tmp_dir}/spanwit-release.json"
+cat >"${spanwit_fixture_path}" <<'JSON'
+{
+  "tagName": "v0.2.0",
+  "isDraft": false,
+  "isPrerelease": false,
+  "assets": [
+    {"name": "spanwit_0.2.0_darwin_arm64.tar.gz", "url": "https://example.invalid/spanwit-darwin-arm64", "digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"},
+    {"name": "spanwit_0.2.0_linux_amd64.tar.gz", "url": "https://example.invalid/spanwit-linux-amd64", "digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"},
+    {"name": "spanwit_0.2.0_linux_arm64.tar.gz", "url": "https://example.invalid/spanwit-linux-arm64", "digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"},
+    {"name": "spanwit_0.2.0_windows_amd64.zip", "url": "https://example.invalid/spanwit-windows-amd64", "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"}
+  ]
+}
+JSON
+
 mkdir -p "${tmp_dir}/bin" "${tmp_dir}/work/Formula"
 # shellcheck disable=SC2016 # The mock script must preserve its variables.
 printf '%s\n' \
@@ -46,6 +61,7 @@ printf '%s\n' \
   'case "$3" in' \
   '  v0.1.5) cat "${DECERNOR_RELEASE_FIXTURE:?}" ;;' \
   '  v0.4.12) cat "${SFETCH_RELEASE_FIXTURE:?}" ;;' \
+  '  v0.2.0) cat "${SPANWIT_RELEASE_FIXTURE:?}" ;;' \
   '  *) echo "unexpected release tag: $3" >&2; exit 1 ;;' \
   'esac' >"${tmp_dir}/bin/gh"
 chmod +x "${tmp_dir}/bin/gh"
@@ -59,6 +75,9 @@ chmod +x "${tmp_dir}/bin/gh"
   PATH="${tmp_dir}/bin:${PATH}" DECERNOR_RELEASE_FIXTURE="${fixture_path}" \
     SFETCH_RELEASE_FIXTURE="${sfetch_fixture_path}" \
     ruby "${root_dir}/scripts/update-formula.rb" sfetch v0.4.12
+
+  PATH="${tmp_dir}/bin:${PATH}" SPANWIT_RELEASE_FIXTURE="${spanwit_fixture_path}" \
+    ruby "${root_dir}/scripts/update-formula.rb" spanwit v0.2.0
 )
 
 formula_path="${tmp_dir}/work/Formula/decernor.rb"
@@ -73,5 +92,19 @@ grep -q 'https://example.invalid/sfetch-darwin-arm64' "${sfetch_formula_path}"
 grep -q 'https://example.invalid/sfetch-linux-amd64' "${sfetch_formula_path}"
 grep -q 'https://example.invalid/sfetch-linux-arm64' "${sfetch_formula_path}"
 grep -q 'bin.install "sfetch"' "${sfetch_formula_path}"
+
+# Versioned archive profile without an Intel macOS asset: arm-only macOS.
+spanwit_formula_path="${tmp_dir}/work/Formula/spanwit.rb"
+grep -q 'https://example.invalid/spanwit-darwin-arm64' "${spanwit_formula_path}"
+grep -q 'https://example.invalid/spanwit-linux-amd64' "${spanwit_formula_path}"
+grep -q 'https://example.invalid/spanwit-linux-arm64' "${spanwit_formula_path}"
+grep -q 'depends_on arch: :arm64' "${spanwit_formula_path}"
+grep -q 'bin.install "spanwit"' "${spanwit_formula_path}"
+grep -q 'system bin/"spanwit", "version"' "${spanwit_formula_path}"
+if grep -q 'darwin_amd64\|windows' "${spanwit_formula_path}"
+then
+  echo "spanwit formula must not reference Intel macOS or Windows assets" >&2
+  exit 1
+fi
 
 echo "update-formula archive profile tests passed"

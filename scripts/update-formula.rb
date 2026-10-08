@@ -19,6 +19,7 @@ description_for = lambda do |name|
     "mdmeld"   => "Pack directory trees into markdown archives for AI sharing",
     "seclusor" => "Git-trackable secrets management with age encryption",
     "sfetch"   => "Secure and verifiable release-asset downloader",
+    "spanwit"  => "Context-aware disk-space diagnostics and safe reclamation",
   }.fetch(name, "#{name} command-line tool")
 end
 
@@ -28,6 +29,7 @@ test_args_for = lambda do |name|
     "kitfly"   => ["--version"],
     "gonimbus" => ["version"],
     "mdmeld"   => ["--help"],
+    "spanwit"  => ["version"],
   }.fetch(name, ["--version"])
 end
 
@@ -54,7 +56,7 @@ end
 version = release.fetch("tagName").delete_prefix("v")
 class_name = app.split(/[^a-zA-Z0-9]/).map(&:capitalize).join
 archive_profile = case app
-when "decernor" then :versioned
+when "decernor", "spanwit" then :versioned
 when "sfetch" then :unversioned
 end
 
@@ -67,12 +69,11 @@ required = {
 optional = { "darwin_amd64" => "#{app}-darwin-amd64" }
 if archive_profile == :versioned
   required = {
-    "darwin_amd64" => "#{app}_#{version}_darwin_amd64.tar.gz",
     "darwin_arm64" => "#{app}_#{version}_darwin_arm64.tar.gz",
     "linux_amd64"  => "#{app}_#{version}_linux_amd64.tar.gz",
     "linux_arm64"  => "#{app}_#{version}_linux_arm64.tar.gz",
   }
-  optional = {}
+  optional = { "darwin_amd64" => "#{app}_#{version}_darwin_amd64.tar.gz" }
 elsif archive_profile == :unversioned
   required = {
     "darwin_arm64" => "#{app}_darwin_arm64.tar.gz",

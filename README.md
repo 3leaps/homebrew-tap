@@ -14,6 +14,7 @@ This tap is the distribution layer for installable macOS and Linux binaries rele
 - `mdmeld` - Pack directory trees into markdown archives for AI sharing
 - `seclusor` - Git-trackable secrets management with age encryption
 - `sfetch` - Secure and verifiable release-asset downloader
+- `spanwit` - Context-aware disk-space diagnostics and safe reclamation
 
 ## Quick Start
 
@@ -25,6 +26,7 @@ brew install 3leaps/tap/gonimbus
 brew install 3leaps/tap/mdmeld
 brew install 3leaps/tap/seclusor
 brew install 3leaps/tap/sfetch
+brew install 3leaps/tap/spanwit
 ```
 
 Or install by short name after tapping:
