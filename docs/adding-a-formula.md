@@ -64,4 +64,4 @@ git push origin main
 - `kitfly`
 - `gonimbus`
 
-Use these as the reference implementation before onboarding additional tools such as `mdmeld`, `authbolt`, or other 3 Leaps CLIs.
+Use these as the reference implementation before onboarding additional tools such as `mdmeld` or other 3 Leaps CLIs.

@@ -19,6 +19,7 @@ description_for = lambda do |name|
     "mdmeld"   => "Pack directory trees into markdown archives for AI sharing",
     "seclusor" => "Git-trackable secrets management with age encryption",
     "sfetch"   => "Secure and verifiable release-asset downloader",
+    "spanwit"  => "Context-aware disk-space diagnostics and safe reclamation",
   }.fetch(name, "#{name} command-line tool")
 end
 
@@ -28,7 +29,15 @@ test_args_for = lambda do |name|
     "kitfly"   => ["--version"],
     "gonimbus" => ["version"],
     "mdmeld"   => ["--help"],
+    "spanwit"  => ["version"],
   }.fetch(name, ["--version"])
+end
+
+caveats_for = lambda do |name|
+  {
+    "spanwit" => "spanwit prune is a dry run unless you pass --execute; only then does it delete anything.\n" \
+                 "Usage and safety model: https://github.com/3leaps/spanwit#readme",
+  }[name]
 end
 
 license_for = lambda do |name|
@@ -54,7 +63,7 @@ end
 version = release.fetch("tagName").delete_prefix("v")
 class_name = app.split(/[^a-zA-Z0-9]/).map(&:capitalize).join
 archive_profile = case app
-when "decernor" then :versioned
+when "decernor", "spanwit" then :versioned
 when "sfetch" then :unversioned
 end
 
@@ -67,12 +76,11 @@ required = {
 optional = { "darwin_amd64" => "#{app}-darwin-amd64" }
 if archive_profile == :versioned
   required = {
-    "darwin_amd64" => "#{app}_#{version}_darwin_amd64.tar.gz",
     "darwin_arm64" => "#{app}_#{version}_darwin_arm64.tar.gz",
     "linux_amd64"  => "#{app}_#{version}_linux_amd64.tar.gz",
     "linux_arm64"  => "#{app}_#{version}_linux_arm64.tar.gz",
   }
-  optional = {}
+  optional = { "darwin_amd64" => "#{app}_#{version}_darwin_amd64.tar.gz" }
 elsif archive_profile == :unversioned
   required = {
     "darwin_arm64" => "#{app}_darwin_arm64.tar.gz",
@@ -152,6 +160,15 @@ else
 end
 lines << "  end"
 lines << ""
+caveat = caveats_for.call(app)
+if caveat
+  lines << "  def caveats"
+  lines << "    <<~EOS"
+  caveat.each_line { |line| lines << "      #{line.chomp}" }
+  lines << "    EOS"
+  lines << "  end"
+  lines << ""
+end
 lines << "  test do"
 test_args_for.call(app).each_with_index do |arg, index|
   prefix = index.zero? ? "    system bin/#{app.inspect}, " : " "

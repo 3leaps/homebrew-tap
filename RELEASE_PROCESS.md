@@ -69,4 +69,4 @@ profile such as Decernor's versioned archives or sfetch's unversioned archives.
 - The binary supports `--version` for the formula test block.
 - The repository release checklist includes a post-publish tap update step.
 
-Detailed onboarding guidance lives in [docs/adding-a-formula.md](/Users/davethompson/dev/3leaps/homebrew-tap/docs/adding-a-formula.md).
+Detailed onboarding guidance lives in [docs/adding-a-formula.md](docs/adding-a-formula.md).
