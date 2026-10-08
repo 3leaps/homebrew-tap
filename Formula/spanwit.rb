@@ -32,6 +32,13 @@ class Spanwit < Formula
     bin.install "spanwit"
   end
 
+  def caveats
+    <<~EOS
+      spanwit prune is a dry run unless you pass --execute; only then does it delete anything.
+      Usage and safety model: https://github.com/3leaps/spanwit#readme
+    EOS
+  end
+
   test do
     system bin/"spanwit", "version"
   end

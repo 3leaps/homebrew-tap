@@ -33,6 +33,13 @@ test_args_for = lambda do |name|
   }.fetch(name, ["--version"])
 end
 
+caveats_for = lambda do |name|
+  {
+    "spanwit" => "spanwit prune is a dry run unless you pass --execute; only then does it delete anything.\n" \
+                 "Usage and safety model: https://github.com/3leaps/spanwit#readme",
+  }[name]
+end
+
 license_for = lambda do |name|
   {
     "gonimbus" => "Apache-2.0",
@@ -153,6 +160,15 @@ else
 end
 lines << "  end"
 lines << ""
+caveat = caveats_for.call(app)
+if caveat
+  lines << "  def caveats"
+  lines << "    <<~EOS"
+  caveat.each_line { |line| lines << "      #{line.chomp}" }
+  lines << "    EOS"
+  lines << "  end"
+  lines << ""
+end
 lines << "  test do"
 test_args_for.call(app).each_with_index do |arg, index|
   prefix = index.zero? ? "    system bin/#{app.inspect}, " : " "
