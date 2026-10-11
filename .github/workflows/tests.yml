@@ -55,6 +55,15 @@ jobs:
       - run: brew test-bot --only-setup
 
       - run: brew test-bot --only-tap-syntax
+
+      # The updater refuses unsigned or mis-signed checksums; its tests sign
+      # fixtures with throwaway minisign keys.
+      - name: Updater tests
+        run: |
+          brew install minisign
+          PATH="$(dirname "$(brew ruby -e 'print RbConfig.ruby')"):$PATH" \
+            bash "$(brew --repository 3leaps/tap)/tests/update-formula_test.sh"
+
       - run: brew test-bot --only-formulae
         if: github.event_name == 'pull_request'
 

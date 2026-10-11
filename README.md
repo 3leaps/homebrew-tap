@@ -65,9 +65,11 @@ make audit APP=kitfly
 make test APP=kitfly
 ```
 
-The generic updater reads the requested published GitHub release metadata and
-rewrites the formula with the release tag and per-platform SHA256 digests. Omit
-`TAG` only when intentionally updating to the latest published release.
+The generic updater reads the requested published GitHub release, verifies its
+`SHA256SUMS` against the minisign key pinned in `keys/minisign-pubkeys.txt`,
+and rewrites the formula with the per-platform SHA256 digests from that verified
+manifest. Omit `TAG` only when intentionally updating to the latest published
+release.
 
 Use `make release APP=<name>` to run the full local tap workflow.
 

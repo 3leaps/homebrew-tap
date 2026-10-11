@@ -10,7 +10,10 @@ have an explicit archive profile in `scripts/update-formula.rb`:
 - publish GitHub releases from `3leaps/<app>`
 - upload direct binaries for `darwin-arm64`, `linux-amd64`, and `linux-arm64`
 - publish Windows binaries separately if needed
-- sign release provenance with minisign and, where required, GPG
+- publish `SHA256SUMS` and `SHA256SUMS.minisig`, signed with minisign (and GPG
+  where required)
+- pin the app's minisign public key in `keys/minisign-pubkeys.txt` in the same
+  PR that adds the formula; the updater refuses an app without a pinned key
 - expose a stable `--version` command
 
 If the tool also supports Intel macOS, publish `darwin-amd64` as an additional asset.
