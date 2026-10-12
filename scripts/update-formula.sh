@@ -11,6 +11,12 @@ then
   exit 1
 fi
 
+if ! command -v minisign >/dev/null 2>&1
+then
+  echo "error: minisign is required to verify release checksums" >&2
+  exit 1
+fi
+
 if ! command -v ruby >/dev/null 2>&1
 then
   echo "error: ruby is required" >&2

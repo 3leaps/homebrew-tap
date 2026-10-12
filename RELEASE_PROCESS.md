@@ -55,8 +55,18 @@ The updater script:
 
 1. Reads the requested published release from GitHub, or the latest when no
    tag is supplied.
-2. Extracts the release tag and asset SHA256 digests.
-3. Rewrites `Formula/<app>.rb`.
+2. Downloads the release `SHA256SUMS` and `SHA256SUMS.minisig` and verifies
+   them with `minisign` against the key pinned for the app in
+   `keys/minisign-pubkeys.txt`. When the trusted comment starts with
+   `<app> v`, it must name the requested tag; a comment in another form (such
+   as minisign's default timestamp) is not checked for the tag.
+3. Takes each archive hash from the verified `SHA256SUMS`, refusing a name that
+   is listed twice. GitHub's asset digest is only a cross-check: a disagreement
+   stops the update, and an asset with no GitHub digest is not cross-checked.
+4. Rewrites `Formula/<app>.rb`.
+
+`minisign` must be installed. A key change is a reviewed edit to
+`keys/minisign-pubkeys.txt`, never something read from a release.
 
 ## Adding Another Tool
 
