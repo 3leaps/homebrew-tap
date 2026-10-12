@@ -200,7 +200,7 @@ expect_refusal() {
   local before err
   before="$(shasum -a 256 "${spanwit_formula_path}")"
   if err="$(cd "${tmp_dir}/work" && PATH="${tmp_dir}/bin:${PATH}" SPANWIT_RELEASE_FIXTURE="${spanwit_fixture_path}" "$@" \
-    ruby "${root_dir}/scripts/update-formula.rb" spanwit v0.2.0 2>&1 >/dev/null)"
+     ruby "${root_dir}/scripts/update-formula.rb" spanwit v0.2.0 2>&1 >/dev/null)"
   then
     echo "expected refusal: ${label}" >&2
     exit 1
@@ -210,7 +210,9 @@ expect_refusal() {
     echo "${label} refused for the wrong reason: ${err}" >&2
     exit 1
   fi
-  if [[ "$(shasum -a 256 "${spanwit_formula_path}")" != "${before}" ]]
+  local after
+  after="$(shasum -a 256 "${spanwit_formula_path}")"
+  if [[ "${after}" != "${before}" ]]
   then
     echo "refused run still rewrote the formula: ${label}" >&2
     exit 1
@@ -249,7 +251,7 @@ reset_spanwit_sums
 mismatch_fixture="${tmp_dir}/spanwit-mismatch.json"
 sed "s/sha256:${dd}/sha256:${de}/" "${spanwit_fixture_path}" >"${mismatch_fixture}"
 if (cd "${tmp_dir}/work" && PATH="${tmp_dir}/bin:${PATH}" SPANWIT_RELEASE_FIXTURE="${mismatch_fixture}" \
-  ruby "${root_dir}/scripts/update-formula.rb" spanwit v0.2.0) >/dev/null 2>&1
+   ruby "${root_dir}/scripts/update-formula.rb" spanwit v0.2.0) >/dev/null 2>&1
 then
   echo "expected refusal: GitHub digest differs from signed manifest" >&2
   exit 1
@@ -273,7 +275,7 @@ expect_refusal "two pinned keys" "no pinned minisign key" env TAP_MINISIGN_KEYS_
 nosig_fixture="${tmp_dir}/spanwit-nosig.json"
 grep -v 'SHA256SUMS' "${spanwit_fixture_path}" >"${nosig_fixture}"
 if (cd "${tmp_dir}/work" && PATH="${tmp_dir}/bin:${PATH}" SPANWIT_RELEASE_FIXTURE="${nosig_fixture}" \
-  ruby "${root_dir}/scripts/update-formula.rb" spanwit v0.2.0) >/dev/null 2>&1
+   ruby "${root_dir}/scripts/update-formula.rb" spanwit v0.2.0) >/dev/null 2>&1
 then
   echo "expected refusal: release without SHA256SUMS assets" >&2
   exit 1
