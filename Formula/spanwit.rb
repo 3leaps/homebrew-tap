@@ -11,20 +11,20 @@ class Spanwit < Formula
     depends_on arch: :arm64
 
     on_arm do
-      url "https://github.com/3leaps/spanwit/releases/download/v0.2.1/spanwit_0.2.1_darwin_arm64.tar.gz"
-      sha256 "84e2f5eceb6043d1a84e96bb8e28b8d13b6949d8f05c3db552729c49e4461c3a"
+      url "https://github.com/3leaps/spanwit/releases/download/v0.2.2/spanwit_0.2.2_darwin_arm64.tar.gz"
+      sha256 "74fac2bb874ef1df5f25f8b4b895c8c2fd1ba1926c189dea77b354bcf8ca8fa0"
     end
   end
 
   on_linux do
     on_intel do
-      url "https://github.com/3leaps/spanwit/releases/download/v0.2.1/spanwit_0.2.1_linux_amd64.tar.gz"
-      sha256 "5156ca3bab556041eb2fc33053d7d8c2f7810d3f21fcaa428257d98d467ea078"
+      url "https://github.com/3leaps/spanwit/releases/download/v0.2.2/spanwit_0.2.2_linux_amd64.tar.gz"
+      sha256 "26b2adeb5c02a6bf9be9f64d36108029946a728087b305ead8dfaa886440330a"
     end
 
     on_arm do
-      url "https://github.com/3leaps/spanwit/releases/download/v0.2.1/spanwit_0.2.1_linux_arm64.tar.gz"
-      sha256 "caa7345bca9e87e449ab2f6c958c319cf3b1cb8aee362da557cc0ea20e985f08"
+      url "https://github.com/3leaps/spanwit/releases/download/v0.2.2/spanwit_0.2.2_linux_arm64.tar.gz"
+      sha256 "62283c9ae4d4b64593fe1f4a40ed45eaab926a311cc738af4f449d8234b54286"
     end
   end
 
