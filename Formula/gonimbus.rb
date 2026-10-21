@@ -11,20 +11,20 @@ class Gonimbus < Formula
     depends_on arch: :arm64
 
     on_arm do
-      url "https://github.com/3leaps/gonimbus/releases/download/v0.4.3/gonimbus-darwin-arm64"
-      sha256 "88d50837789f7d1a2e6c13345464c7d49624eb54e43c2cdac695eb1efb108e7c"
+      url "https://github.com/3leaps/gonimbus/releases/download/v0.4.4/gonimbus-darwin-arm64"
+      sha256 "ab18ec247e05b7e885ee2d5eff30f3337898eec421ae724787a74234d95d1124"
     end
   end
 
   on_linux do
     on_intel do
-      url "https://github.com/3leaps/gonimbus/releases/download/v0.4.3/gonimbus-linux-amd64"
-      sha256 "409827476dc2c8322720cf911af53df305d7ca9e56a0a6f0fe38d156acd18471"
+      url "https://github.com/3leaps/gonimbus/releases/download/v0.4.4/gonimbus-linux-amd64"
+      sha256 "7fe8d121ef14e8f75567868175bb5aec8361ee84f940ccecdc5868fa6bf1287c"
     end
 
     on_arm do
-      url "https://github.com/3leaps/gonimbus/releases/download/v0.4.3/gonimbus-linux-arm64"
-      sha256 "9a890ba10c731b50862c5307abe31aa4fd5f45e3e740c53dacb4c11a511b1845"
+      url "https://github.com/3leaps/gonimbus/releases/download/v0.4.4/gonimbus-linux-arm64"
+      sha256 "1c2adcdc36829cd216db17d709fb7cae327853197a7e340b21d18f4cace45b31"
     end
   end
 
