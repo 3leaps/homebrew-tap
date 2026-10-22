@@ -11,20 +11,20 @@ class Sfetch < Formula
     depends_on arch: :arm64
 
     on_arm do
-      url "https://github.com/3leaps/sfetch/releases/download/v0.4.13/sfetch_darwin_arm64.tar.gz"
-      sha256 "20f68dfc7aa6ee3df9564f7912b466bf51087a54edb1a671c72dc8ae05560f9c"
+      url "https://github.com/3leaps/sfetch/releases/download/v0.4.14/sfetch_darwin_arm64.tar.gz"
+      sha256 "2a2095ece203e72f216a5353dcb8a9f15331afd2f41d3c19bd7be3041dd4020c"
     end
   end
 
   on_linux do
     on_intel do
-      url "https://github.com/3leaps/sfetch/releases/download/v0.4.13/sfetch_linux_amd64.tar.gz"
-      sha256 "d535ec2260cdbdaf9eadfa2881b3a149c63725e0fee2f141b7a5ced3b975cbec"
+      url "https://github.com/3leaps/sfetch/releases/download/v0.4.14/sfetch_linux_amd64.tar.gz"
+      sha256 "eccb6ab95421afafd2ce4b1d5ffa3f9d0c8fc5e1a6ec73522c8abc5d3953bd82"
     end
 
     on_arm do
-      url "https://github.com/3leaps/sfetch/releases/download/v0.4.13/sfetch_linux_arm64.tar.gz"
-      sha256 "76da09f2b3a7fc51db5400f460e4372f791e7e2d8f12697a8143daa48dc07307"
+      url "https://github.com/3leaps/sfetch/releases/download/v0.4.14/sfetch_linux_arm64.tar.gz"
+      sha256 "0c197408b65c6ef6c22959acfc1da477df353487e89e07f3e12aad5dede1e58c"
     end
   end
 
