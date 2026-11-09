@@ -11,20 +11,20 @@ class Gonimbus < Formula
     depends_on arch: :arm64
 
     on_arm do
-      url "https://github.com/3leaps/gonimbus/releases/download/v0.4.6/gonimbus-darwin-arm64"
-      sha256 "317b28d1fb83707c7b7f2079b9beb3b3782559fdfccab542f39bda5265ca8e9d"
+      url "https://github.com/3leaps/gonimbus/releases/download/v0.4.7/gonimbus-darwin-arm64"
+      sha256 "d8759856653baeb320af7c861cc7021a89e05cdbc09bf89daa51286aeff75050"
     end
   end
 
   on_linux do
     on_intel do
-      url "https://github.com/3leaps/gonimbus/releases/download/v0.4.6/gonimbus-linux-amd64"
-      sha256 "57334a7f7afed7c0822e16a3027d0fa717a4e3778886b3a0eb2acf7ae925daf1"
+      url "https://github.com/3leaps/gonimbus/releases/download/v0.4.7/gonimbus-linux-amd64"
+      sha256 "b170f38a6e12f94e652fcf187bf1b09b2890495f3668398f43539116f99db274"
     end
 
     on_arm do
-      url "https://github.com/3leaps/gonimbus/releases/download/v0.4.6/gonimbus-linux-arm64"
-      sha256 "99669a57ca50a0918f39bf0cad2307429e54bd53ab1c93cf0220fdc6f81e6acd"
+      url "https://github.com/3leaps/gonimbus/releases/download/v0.4.7/gonimbus-linux-arm64"
+      sha256 "c75dfe5cf70e173c990a410049b892b31b81ed255016681f75dc040ddd38bcc5"
     end
   end
 
@@ -33,7 +33,11 @@ class Gonimbus < Formula
   end
 
   test do
-    system bin/"gonimbus", "version"
+    assert_match version.to_s, shell_output("#{bin}/gonimbus version")
+    assert_match "\"version\":\"#{version}\"", shell_output("#{bin}/gonimbus version --json").gsub(/\s+/, "")
+    unless build.head?
+      assert_equal stable.checksum.hexdigest, Digest::SHA256.file((bin/"gonimbus").realpath).hexdigest
+    end
   end
 
   private

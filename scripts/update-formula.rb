@@ -229,10 +229,18 @@ if caveat
   lines << ""
 end
 lines << "  test do"
-test_args_for.call(app).each_with_index do |arg, index|
-  prefix = index.zero? ? "    system bin/#{app.inspect}, " : " "
-  suffix = (index == test_args_for.call(app).length - 1) ? "" : ","
-  lines << "#{prefix}#{arg.inspect}#{suffix}"
+if app == "gonimbus"
+  lines << "    assert_match version.to_s, shell_output(\"\#{bin}/gonimbus version\")"
+  lines << "    assert_match \"\\\"version\\\":\\\"\#{version}\\\"\", shell_output(\"\#{bin}/gonimbus version --json\").gsub(/\\s+/, \"\")"
+  lines << "    unless build.head?"
+  lines << "      assert_equal stable.checksum.hexdigest, Digest::SHA256.file((bin/\"gonimbus\").realpath).hexdigest"
+  lines << "    end"
+else
+  test_args_for.call(app).each_with_index do |arg, index|
+    prefix = index.zero? ? "    system bin/#{app.inspect}, " : " "
+    suffix = (index == test_args_for.call(app).length - 1) ? "" : ","
+    lines << "#{prefix}#{arg.inspect}#{suffix}"
+  end
 end
 lines << "  end"
 unless archive_profile
