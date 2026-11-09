@@ -55,6 +55,22 @@ cat >"${spanwit_fixture_path}" <<'JSON'
 }
 JSON
 
+gonimbus_fixture_path="${tmp_dir}/gonimbus-release.json"
+cat >"${gonimbus_fixture_path}" <<'JSON'
+{
+  "tagName": "v0.4.7",
+  "isDraft": false,
+  "isPrerelease": false,
+  "assets": [
+    {"name": "SHA256SUMS", "url": "https://example.invalid/sums", "digest": ""},
+    {"name": "SHA256SUMS.minisig", "url": "https://example.invalid/sums.minisig", "digest": ""},
+    {"name": "gonimbus-darwin-arm64", "url": "https://example.invalid/gonimbus-darwin-arm64", "digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555"},
+    {"name": "gonimbus-linux-amd64", "url": "https://example.invalid/gonimbus-linux-amd64", "digest": "sha256:6666666666666666666666666666666666666666666666666666666666666666"},
+    {"name": "gonimbus-linux-arm64", "url": "https://example.invalid/gonimbus-linux-arm64", "digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777"}
+  ]
+}
+JSON
+
 mkdir -p "${tmp_dir}/bin" "${tmp_dir}/work/Formula" "${tmp_dir}/sums"
 
 # Throwaway minisign keys; nothing real is used or written outside tmp_dir.
@@ -62,7 +78,7 @@ minisign -G -W -p "${tmp_dir}/good.pub" -s "${tmp_dir}/good.key" >/dev/null
 minisign -G -W -p "${tmp_dir}/other.pub" -s "${tmp_dir}/other.key" >/dev/null
 good_key="$(sed -n 2p "${tmp_dir}/good.pub")"
 keys_file="${tmp_dir}/keys.txt"
-printf '%s %s\n' decernor "${good_key}" sfetch "${good_key}" spanwit "${good_key}" >"${keys_file}"
+printf '%s %s\n' decernor "${good_key}" sfetch "${good_key}" spanwit "${good_key}" gonimbus "${good_key}" >"${keys_file}"
 export TAP_MINISIGN_KEYS_FILE="${keys_file}"
 
 # write_sums <dir> <signing key> <trusted comment> <digest> <name> [<digest> <name> ...]
@@ -98,6 +114,11 @@ d0=0000000000000000000000000000000000000000000000000000000000000000
 write_sums "${tmp_dir}/sums/v0.2.0" "${tmp_dir}/good.key" "spanwit v0.2.0 2026-01-01T00:00:00Z" \
   "${dd}" spanwit_0.2.0_darwin_arm64.tar.gz "${de}" spanwit_0.2.0_linux_amd64.tar.gz \
   "${df}" spanwit_0.2.0_linux_arm64.tar.gz "${d0}" spanwit_0.2.0_windows_amd64.zip
+g1=5555555555555555555555555555555555555555555555555555555555555555
+g2=6666666666666666666666666666666666666666666666666666666666666666
+g3=7777777777777777777777777777777777777777777777777777777777777777
+write_sums "${tmp_dir}/sums/v0.4.7" "${tmp_dir}/good.key" "gonimbus v0.4.7 2026-11-09T00:00:00Z" \
+  "${g1}" gonimbus-darwin-arm64 "${g2}" gonimbus-linux-amd64 "${g3}" gonimbus-linux-arm64
 # shellcheck disable=SC2016 # The mock script must preserve its variables.
 printf '%s\n' \
   '#!/usr/bin/env bash' \
@@ -117,6 +138,7 @@ printf '%s\n' \
   '  v0.1.5) cat "${DECERNOR_RELEASE_FIXTURE:?}" ;;' \
   '  v0.4.12) cat "${SFETCH_RELEASE_FIXTURE:?}" ;;' \
   '  v0.2.0) cat "${SPANWIT_RELEASE_FIXTURE:?}" ;;' \
+  '  v0.4.7) cat "${GONIMBUS_RELEASE_FIXTURE:?}" ;;' \
   '  *) echo "unexpected release tag: $3" >&2; exit 1 ;;' \
   'esac' >"${tmp_dir}/bin/gh"
 chmod +x "${tmp_dir}/bin/gh"
@@ -134,7 +156,14 @@ export SUMS_FIXTURE_DIR="${tmp_dir}/sums"
 
   PATH="${tmp_dir}/bin:${PATH}" SPANWIT_RELEASE_FIXTURE="${spanwit_fixture_path}" \
     ruby "${root_dir}/scripts/update-formula.rb" spanwit v0.2.0
+
+  PATH="${tmp_dir}/bin:${PATH}" GONIMBUS_RELEASE_FIXTURE="${gonimbus_fixture_path}" \
+    ruby "${root_dir}/scripts/update-formula.rb" gonimbus v0.4.7
 )
+
+gonimbus_formula_path="${tmp_dir}/work/Formula/gonimbus.rb"
+grep -q 'gonimbus version --json' "${gonimbus_formula_path}"
+grep -q 'Digest::SHA256.file((bin/"gonimbus").realpath).hexdigest' "${gonimbus_formula_path}"
 
 formula_path="${tmp_dir}/work/Formula/decernor.rb"
 grep -q 'https://example.invalid/darwin-amd64' "${formula_path}"
