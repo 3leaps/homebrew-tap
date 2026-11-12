@@ -1,10 +1,15 @@
 class Canondocs < Formula
   desc "RFC 8785 canonical JSON from JSON, YAML and NDJSON"
   homepage "https://github.com/3leaps/canondocs"
-  version "0.1.0"
   license any_of: ["MIT", "Apache-2.0"]
 
+  # No darwin-amd64 binary is published. The head spec gives unsupported
+  # platforms a buildable fallback and keeps tap-wide readall checks valid.
+  head "https://github.com/3leaps/canondocs.git", branch: "main"
+
   on_macos do
+    depends_on arch: :arm64
+
     on_arm do
       url "https://github.com/3leaps/canondocs/releases/download/v0.1.0/canondocs-darwin-arm64"
       sha256 "1bf263437d8ff598cc326558f2630bfc569292f832b2f4393ae2da331b230bc3"
