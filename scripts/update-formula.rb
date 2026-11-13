@@ -14,13 +14,14 @@ out_file = "Formula/#{app}.rb"
 
 description_for = lambda do |name|
   {
-    "decernor" => "Local key-material hygiene and readiness checks",
-    "kitfly"   => "Turn your writing into a website",
-    "gonimbus" => "Cloud object storage crawl, inspect, and streaming CLI",
-    "mdmeld"   => "Pack directory trees into markdown archives for AI sharing",
-    "seclusor" => "Git-trackable secrets management with age encryption",
-    "sfetch"   => "Secure and verifiable release-asset downloader",
-    "spanwit"  => "Context-aware disk-space diagnostics and safe reclamation",
+    "decernor"  => "Local key-material hygiene and readiness checks",
+    "kitfly"    => "Turn your writing into a website",
+    "gonimbus"  => "Cloud object storage crawl, inspect, and streaming CLI",
+    "mdmeld"    => "Pack directory trees into markdown archives for AI sharing",
+    "seclusor"  => "Git-trackable secrets management with age encryption",
+    "sfetch"    => "Secure and verifiable release-asset downloader",
+    "spanwit"   => "Context-aware disk-space diagnostics and safe reclamation",
+    "yamlprims" => "Memory-safe YAML 1.2 Core reader, writer and I-JSON projection",
   }.fetch(name, "#{name} command-line tool")
 end
 
@@ -43,8 +44,9 @@ end
 
 license_for = lambda do |name|
   {
-    "gonimbus" => "Apache-2.0",
-    "sfetch"   => "Apache-2.0",
+    "gonimbus"  => "Apache-2.0",
+    "sfetch"    => "Apache-2.0",
+    "yamlprims" => ["MIT", "Apache-2.0"],
   }.fetch(name, "MIT")
 end
 
@@ -67,6 +69,7 @@ class_name = app.split(/[^a-zA-Z0-9]/).map(&:capitalize).join
 archive_profile = case app
 when "decernor", "spanwit" then :versioned
 when "sfetch" then :unversioned
+when "yamlprims" then :versioned_hyphen
 end
 
 assets = release.fetch("assets")
@@ -76,14 +79,24 @@ required = {
   "linux_arm64"  => "#{app}-linux-arm64",
 }
 optional = { "darwin_amd64" => "#{app}-darwin-amd64" }
-if archive_profile == :versioned
+case archive_profile
+when :versioned
   required = {
     "darwin_arm64" => "#{app}_#{version}_darwin_arm64.tar.gz",
     "linux_amd64"  => "#{app}_#{version}_linux_amd64.tar.gz",
     "linux_arm64"  => "#{app}_#{version}_linux_arm64.tar.gz",
   }
   optional = { "darwin_amd64" => "#{app}_#{version}_darwin_amd64.tar.gz" }
-elsif archive_profile == :unversioned
+when :versioned_hyphen
+  # <app>-<version>-<os>-<arch>.tar.gz, each holding the <app> binary at the
+  # archive root (yamlprims).
+  required = {
+    "darwin_arm64" => "#{app}-#{version}-darwin-arm64.tar.gz",
+    "linux_amd64"  => "#{app}-#{version}-linux-amd64.tar.gz",
+    "linux_arm64"  => "#{app}-#{version}-linux-arm64.tar.gz",
+  }
+  optional = { "darwin_amd64" => "#{app}-#{version}-darwin-amd64.tar.gz" }
+when :unversioned
   required = {
     "darwin_arm64" => "#{app}_darwin_arm64.tar.gz",
     "linux_amd64"  => "#{app}_linux_amd64.tar.gz",
@@ -173,7 +186,12 @@ lines = []
 lines << "class #{class_name} < Formula"
 lines << "  desc #{description_for.call(app).inspect}"
 lines << "  homepage \"https://github.com/#{repo}\""
-lines << "  license #{license_for.call(app).inspect}"
+license = license_for.call(app)
+lines << if license.is_a?(Array)
+  "  license any_of: #{license.inspect}"
+else
+  "  license #{license.inspect}"
+end
 unless resolved["darwin_amd64"]
   lines << ""
   lines << "  # No darwin-amd64 binary is published. The head spec gives unsupported"

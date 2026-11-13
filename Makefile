@@ -3,7 +3,7 @@ FORMULA_DIR := Formula
 UPDATE_SCRIPT := ./scripts/update-formula.sh
 TAG ?=
 
-.PHONY: help update update-decernor update-kitfly update-gonimbus update-mdmeld update-seclusor update-sfetch update-spanwit audit test test-updater clean clean-tap style precommit release
+.PHONY: help update update-decernor update-kitfly update-gonimbus update-mdmeld update-seclusor update-sfetch update-spanwit update-yamlprims audit test test-updater clean clean-tap style precommit release
 
 help:
 	@echo "3 Leaps Homebrew Tap"
@@ -17,6 +17,7 @@ help:
 	@echo "  make update-seclusor        Update seclusor"
 	@echo "  make update-sfetch TAG=vX.Y.Z Update sfetch"
 	@echo "  make update-spanwit TAG=vX.Y.Z Update spanwit"
+	@echo "  make update-yamlprims TAG=vX.Y.Z Update yamlprims"
 	@echo "  make style                  Run Ruby style checks"
 	@echo "  make test-updater           Run updater tests"
 	@echo "  make audit APP=kitfly       Run brew audit on one formula"
@@ -52,6 +53,9 @@ update-spanwit:
 
 update-sfetch:
 	@$(MAKE) update APP=sfetch TAG="$(TAG)"
+
+update-yamlprims:
+	@$(MAKE) update APP=yamlprims TAG="$(TAG)"
 
 style:
 	@brew style .

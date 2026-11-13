@@ -55,6 +55,23 @@ cat >"${spanwit_fixture_path}" <<'JSON'
 }
 JSON
 
+yamlprims_fixture_path="${tmp_dir}/yamlprims-release.json"
+cat >"${yamlprims_fixture_path}" <<'JSON'
+{
+  "tagName": "v0.2.1",
+  "isDraft": false,
+  "isPrerelease": false,
+  "assets": [
+    {"name": "SHA256SUMS", "url": "https://example.invalid/sums", "digest": ""},
+    {"name": "SHA256SUMS.minisig", "url": "https://example.invalid/sums.minisig", "digest": ""},
+    {"name": "yamlprims-0.2.1-darwin-arm64.tar.gz", "url": "https://example.invalid/yamlprims-darwin-arm64", "digest": "sha256:8888888888888888888888888888888888888888888888888888888888888888"},
+    {"name": "yamlprims-0.2.1-linux-amd64.tar.gz", "url": "https://example.invalid/yamlprims-linux-amd64", "digest": "sha256:9999999999999999999999999999999999999999999999999999999999999999"},
+    {"name": "yamlprims-0.2.1-linux-arm64.tar.gz", "url": "https://example.invalid/yamlprims-linux-arm64", "digest": "sha256:abababababababababababababababababababababababababababababababab"},
+    {"name": "yamlprims-0.2.1-windows-amd64.zip", "url": "https://example.invalid/yamlprims-windows-amd64", "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"}
+  ]
+}
+JSON
+
 gonimbus_fixture_path="${tmp_dir}/gonimbus-release.json"
 cat >"${gonimbus_fixture_path}" <<'JSON'
 {
@@ -78,7 +95,7 @@ minisign -G -W -p "${tmp_dir}/good.pub" -s "${tmp_dir}/good.key" >/dev/null
 minisign -G -W -p "${tmp_dir}/other.pub" -s "${tmp_dir}/other.key" >/dev/null
 good_key="$(sed -n 2p "${tmp_dir}/good.pub")"
 keys_file="${tmp_dir}/keys.txt"
-printf '%s %s\n' decernor "${good_key}" sfetch "${good_key}" spanwit "${good_key}" gonimbus "${good_key}" >"${keys_file}"
+printf '%s %s\n' decernor "${good_key}" sfetch "${good_key}" spanwit "${good_key}" gonimbus "${good_key}" yamlprims "${good_key}" >"${keys_file}"
 export TAP_MINISIGN_KEYS_FILE="${keys_file}"
 
 # write_sums <dir> <signing key> <trusted comment> <digest> <name> [<digest> <name> ...]
@@ -119,6 +136,12 @@ g2=6666666666666666666666666666666666666666666666666666666666666666
 g3=7777777777777777777777777777777777777777777777777777777777777777
 write_sums "${tmp_dir}/sums/v0.4.7" "${tmp_dir}/good.key" "gonimbus v0.4.7 2026-11-09T00:00:00Z" \
   "${g1}" gonimbus-darwin-arm64 "${g2}" gonimbus-linux-amd64 "${g3}" gonimbus-linux-arm64
+y1=8888888888888888888888888888888888888888888888888888888888888888
+y2=9999999999999999999999999999999999999999999999999999999999999999
+y3=abababababababababababababababababababababababababababababababab
+write_sums "${tmp_dir}/sums/v0.2.1" "${tmp_dir}/good.key" "yamlprims v0.2.1 - 2026-11-12T20:09:58Z" \
+  "${y1}" yamlprims-0.2.1-darwin-arm64.tar.gz "${y2}" yamlprims-0.2.1-linux-amd64.tar.gz \
+  "${y3}" yamlprims-0.2.1-linux-arm64.tar.gz "${d0}" yamlprims-0.2.1-windows-amd64.zip
 # shellcheck disable=SC2016 # The mock script must preserve its variables.
 printf '%s\n' \
   '#!/usr/bin/env bash' \
@@ -139,6 +162,7 @@ printf '%s\n' \
   '  v0.4.12) cat "${SFETCH_RELEASE_FIXTURE:?}" ;;' \
   '  v0.2.0) cat "${SPANWIT_RELEASE_FIXTURE:?}" ;;' \
   '  v0.4.7) cat "${GONIMBUS_RELEASE_FIXTURE:?}" ;;' \
+  '  v0.2.1) cat "${YAMLPRIMS_RELEASE_FIXTURE:?}" ;;' \
   '  *) echo "unexpected release tag: $3" >&2; exit 1 ;;' \
   'esac' >"${tmp_dir}/bin/gh"
 chmod +x "${tmp_dir}/bin/gh"
@@ -159,6 +183,9 @@ export SUMS_FIXTURE_DIR="${tmp_dir}/sums"
 
   PATH="${tmp_dir}/bin:${PATH}" GONIMBUS_RELEASE_FIXTURE="${gonimbus_fixture_path}" \
     ruby "${root_dir}/scripts/update-formula.rb" gonimbus v0.4.7
+
+  PATH="${tmp_dir}/bin:${PATH}" YAMLPRIMS_RELEASE_FIXTURE="${yamlprims_fixture_path}" \
+    ruby "${root_dir}/scripts/update-formula.rb" yamlprims v0.2.1
 )
 
 gonimbus_formula_path="${tmp_dir}/work/Formula/gonimbus.rb"
@@ -204,6 +231,22 @@ assert_stanza "${formula_path}" https://example.invalid/linux-arm64 444444444444
 assert_stanza "${spanwit_formula_path}" https://example.invalid/spanwit-darwin-arm64 dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
 assert_stanza "${spanwit_formula_path}" https://example.invalid/spanwit-linux-amd64 eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 assert_stanza "${spanwit_formula_path}" https://example.invalid/spanwit-linux-arm64 ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+
+# Hyphenated versioned archives (<app>-<version>-<os>-<arch>.tar.gz) and a
+# dual license: arm-only macOS, binary at the archive root, any_of license.
+yamlprims_formula_path="${tmp_dir}/work/Formula/yamlprims.rb"
+assert_stanza "${yamlprims_formula_path}" https://example.invalid/yamlprims-darwin-arm64 "${y1}"
+assert_stanza "${yamlprims_formula_path}" https://example.invalid/yamlprims-linux-amd64 "${y2}"
+assert_stanza "${yamlprims_formula_path}" https://example.invalid/yamlprims-linux-arm64 "${y3}"
+grep -q 'depends_on arch: :arm64' "${yamlprims_formula_path}"
+grep -q 'bin.install "yamlprims"' "${yamlprims_formula_path}"
+grep -q 'license any_of: \["MIT", "Apache-2.0"\]' "${yamlprims_formula_path}"
+grep -q 'system bin/"yamlprims", "--version"' "${yamlprims_formula_path}"
+if grep -q 'windows' "${yamlprims_formula_path}"
+then
+  echo "yamlprims formula must ignore Windows assets" >&2
+  exit 1
+fi
 
 grep -q 'def caveats' "${spanwit_formula_path}"
 grep -q 'unless you pass --execute' "${spanwit_formula_path}"

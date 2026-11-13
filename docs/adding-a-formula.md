@@ -34,8 +34,9 @@ Optional:
 <app>-darwin-amd64
 ```
 
-Decernor uses the versioned-archive profile, while sfetch uses unversioned
-archives with underscore-separated platform names. Add another archive profile
+Decernor uses the versioned-archive profile, sfetch uses unversioned
+archives with underscore-separated platform names, and yamlprims uses
+hyphenated versioned archives (`<app>-<version>-<os>-<arch>.tar.gz`). Add another archive profile
 only when its release layout differs from the established patterns.
 
 ## First-Time Onboarding
