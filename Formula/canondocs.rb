@@ -11,19 +11,19 @@ class Canondocs < Formula
     depends_on arch: :arm64
 
     on_arm do
-      url "https://github.com/3leaps/canondocs/releases/download/v0.1.0/canondocs-darwin-arm64"
-      sha256 "1bf263437d8ff598cc326558f2630bfc569292f832b2f4393ae2da331b230bc3"
+      url "https://github.com/3leaps/canondocs/releases/download/v0.1.1/canondocs-darwin-arm64"
+      sha256 "6cd63b7d372421e665ea9ce50fc71d32516300b40af795535368126b78bd7ec6"
     end
   end
 
   on_linux do
     on_intel do
-      url "https://github.com/3leaps/canondocs/releases/download/v0.1.0/canondocs-linux-amd64"
-      sha256 "49166973e90f59350e30324a4f03b115fd06d6e80ba7f0975be14cd91ef0319e"
+      url "https://github.com/3leaps/canondocs/releases/download/v0.1.1/canondocs-linux-amd64"
+      sha256 "d539e23d4714f6df013039a349ce9ba70baf47b35a279099dd3075628f1e7c21"
     end
     on_arm do
-      url "https://github.com/3leaps/canondocs/releases/download/v0.1.0/canondocs-linux-arm64"
-      sha256 "83411771f25c20e216804e2e6a9ab9592b468e814634ab54c28ebffa5825a762"
+      url "https://github.com/3leaps/canondocs/releases/download/v0.1.1/canondocs-linux-arm64"
+      sha256 "8529880240bddcaba24f002980da6af4a0bb16b7fb3ee56d6580af6fc2d5f972"
     end
   end
 
