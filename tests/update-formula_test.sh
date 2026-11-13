@@ -204,6 +204,7 @@ grep -q 'https://example.invalid/sfetch-darwin-arm64' "${sfetch_formula_path}"
 grep -q 'https://example.invalid/sfetch-linux-amd64' "${sfetch_formula_path}"
 grep -q 'https://example.invalid/sfetch-linux-arm64' "${sfetch_formula_path}"
 grep -q 'bin.install "sfetch"' "${sfetch_formula_path}"
+grep -q '^  license "MIT"$' "${sfetch_formula_path}"
 
 # Versioned archive profile without an Intel macOS asset: arm-only macOS.
 spanwit_formula_path="${tmp_dir}/work/Formula/spanwit.rb"
