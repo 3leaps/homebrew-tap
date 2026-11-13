@@ -38,6 +38,15 @@ sfetch_linux_amd64.tar.gz
 sfetch_linux_arm64.tar.gz
 ```
 
+Yamlprims publishes hyphenated versioned archives containing the `yamlprims`
+binary at the archive root:
+
+```text
+yamlprims-<version>-darwin-arm64.tar.gz
+yamlprims-<version>-linux-amd64.tar.gz
+yamlprims-<version>-linux-arm64.tar.gz
+```
+
 Windows assets can still be published upstream, but they are ignored here.
 
 ## Updating a Formula

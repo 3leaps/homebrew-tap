@@ -15,6 +15,7 @@ This tap is the distribution layer for installable macOS and Linux binaries rele
 - `seclusor` - Git-trackable secrets management with age encryption
 - `sfetch` - Secure and verifiable release-asset downloader
 - `spanwit` - Context-aware disk-space diagnostics and safe reclamation
+- `yamlprims` - Memory-safe YAML 1.2 Core reader, writer and I-JSON projection
 
 ## Quick Start
 
@@ -27,6 +28,7 @@ brew install 3leaps/tap/mdmeld
 brew install 3leaps/tap/seclusor
 brew install 3leaps/tap/sfetch
 brew install 3leaps/tap/spanwit
+brew install 3leaps/tap/yamlprims
 ```
 
 Or install by short name after tapping:
