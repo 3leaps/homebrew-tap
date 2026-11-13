@@ -1,7 +1,7 @@
 class Sfetch < Formula
   desc "Secure and verifiable release-asset downloader"
   homepage "https://github.com/3leaps/sfetch"
-  license "Apache-2.0"
+  license "MIT"
 
   # No darwin-amd64 binary is published. The head spec gives unsupported
   # platforms a buildable fallback and keeps tap-wide readall checks valid.
