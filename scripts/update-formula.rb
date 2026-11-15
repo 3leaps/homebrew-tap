@@ -45,6 +45,7 @@ end
 license_for = lambda do |name|
   {
     "gonimbus"  => "Apache-2.0",
+    "seclusor"  => ["MIT", "Apache-2.0"],
     "yamlprims" => ["MIT", "Apache-2.0"],
   }.fetch(name, "MIT")
 end
