@@ -11,20 +11,20 @@ class Yamlprims < Formula
     depends_on arch: :arm64
 
     on_arm do
-      url "https://github.com/3leaps/yamlprims/releases/download/v0.2.2/yamlprims-0.2.2-darwin-arm64.tar.gz"
-      sha256 "8cbf37fff33719740cdc460b4840e7cdc288ec69bf68041a5cceba0dc52e29c3"
+      url "https://github.com/3leaps/yamlprims/releases/download/v0.3.0/yamlprims-0.3.0-darwin-arm64.tar.gz"
+      sha256 "49f13282a221e1945029532a7a236bb1ad4381a94f0053cca37b87637d973b39"
     end
   end
 
   on_linux do
     on_intel do
-      url "https://github.com/3leaps/yamlprims/releases/download/v0.2.2/yamlprims-0.2.2-linux-amd64.tar.gz"
-      sha256 "230e57719bda85f5f489cccb271d5e821ecdb399979001cb3fb3ab44af49c3a5"
+      url "https://github.com/3leaps/yamlprims/releases/download/v0.3.0/yamlprims-0.3.0-linux-amd64.tar.gz"
+      sha256 "88aa5f3db0990291b12bdebe9d652cf0bede44e777d934944ccb92efffe63389"
     end
 
     on_arm do
-      url "https://github.com/3leaps/yamlprims/releases/download/v0.2.2/yamlprims-0.2.2-linux-arm64.tar.gz"
-      sha256 "09f05681bd8ba82646b919a4dbb11a26296802d7f67d9d11f40f42da5254dd8b"
+      url "https://github.com/3leaps/yamlprims/releases/download/v0.3.0/yamlprims-0.3.0-linux-arm64.tar.gz"
+      sha256 "90e70be61aaf461cb931af14456bb85bb46605997c138ae650a68a20e74b1574"
     end
   end
 
