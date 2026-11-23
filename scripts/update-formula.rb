@@ -183,8 +183,15 @@ optional.each do |key, asset_name|
 end
 
 lines = []
+platform_lines = lambda do |key|
+  entry = resolved.fetch(key)
+  url = entry.fetch("url").inspect
+  sha256 = entry.fetch("sha256").inspect
+  ["      url #{url}", "      sha256 #{sha256}"]
+end
 lines << "class #{class_name} < Formula"
-lines << "  desc #{description_for.call(app).inspect}"
+desc = description_for.call(app).inspect
+lines << "  desc #{desc}"
 lines << "  homepage \"https://github.com/#{repo}\""
 license = license_for.call(app)
 lines << if license.is_a?(Array)
@@ -206,26 +213,22 @@ unless resolved["darwin_amd64"]
 end
 if resolved["darwin_amd64"]
   lines << "    on_intel do"
-  lines << "      url #{resolved.fetch("darwin_amd64").fetch("url").inspect}"
-  lines << "      sha256 #{resolved.fetch("darwin_amd64").fetch("sha256").inspect}"
+  lines.concat(platform_lines.call("darwin_amd64"))
   lines << "    end"
   lines << ""
 end
 lines << "    on_arm do"
-lines << "      url #{resolved.fetch("darwin_arm64").fetch("url").inspect}"
-lines << "      sha256 #{resolved.fetch("darwin_arm64").fetch("sha256").inspect}"
+lines.concat(platform_lines.call("darwin_arm64"))
 lines << "    end"
 lines << "  end"
 lines << ""
 lines << "  on_linux do"
 lines << "    on_intel do"
-lines << "      url #{resolved.fetch("linux_amd64").fetch("url").inspect}"
-lines << "      sha256 #{resolved.fetch("linux_amd64").fetch("sha256").inspect}"
+lines.concat(platform_lines.call("linux_amd64"))
 lines << "    end"
 lines << ""
 lines << "    on_arm do"
-lines << "      url #{resolved.fetch("linux_arm64").fetch("url").inspect}"
-lines << "      sha256 #{resolved.fetch("linux_arm64").fetch("sha256").inspect}"
+lines.concat(platform_lines.call("linux_arm64"))
 lines << "    end"
 lines << "  end"
 lines << ""
@@ -256,7 +259,11 @@ if app == "gonimbus"
 else
   test_args_for.call(app).each_with_index do |arg, index|
     prefix = index.zero? ? "    system bin/#{app.inspect}, " : " "
-    suffix = (index == test_args_for.call(app).length - 1) ? "" : ","
+    suffix = if index == test_args_for.call(app).length - 1
+      ""
+    else
+      ","
+    end
     lines << "#{prefix}#{arg.inspect}#{suffix}"
   end
 end
